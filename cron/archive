@@ -1,0 +1,8 @@
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+
+# Sync MDB and Elasticsearch
+30 0 * * * root /backup/sync.sh
+
+# make sure mdb-fs index is always fresh in filer
+*/5 * * * * root rsync -ac /sites/mdb-fs/root_storage/index /sites/filer/indexes
+

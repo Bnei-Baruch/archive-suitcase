@@ -1,0 +1,17 @@
+[mdb]
+url="postgres://localhost:5432/mdb?sslmode=disable"
+
+[server]
+bind-address=":8081"
+mode="release"
+rollbar-token=""
+rollbar-environment=""
+base-url="http://cdn.archive/"
+
+[file_service]
+urls=[
+  "http://files.archive/api/v1/get"
+]
+
+[permissions]
+public-only=true

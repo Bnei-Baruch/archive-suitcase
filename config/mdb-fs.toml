@@ -1,0 +1,6 @@
+root="/sites/mdb-fs/root_storage"
+mdb="postgres://localhost:5432/mdb?sslmode=disable"
+origins=["http://files.bbdomain.org","http://files.kabbalahmedia.info"]
+fetchers=2
+sync-update-interval="60s"
+#suitcase-id=""

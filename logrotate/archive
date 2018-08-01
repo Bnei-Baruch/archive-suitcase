@@ -1,0 +1,27 @@
+/sites/mdb-links/logs/nginx-*.log
+/sites/archive-unzip/logs/nginx-*.log
+/sites/imaginary/logs/nginx-*.log
+/sites/archive-backend/logs/nginx-*.log
+/sites/filer/logs/nginx-*.log {
+    size 10M
+    missingok
+    rotate 10
+    compress
+    delaycompress
+    notifempty
+    sharedscripts
+    postrotate
+        [ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`
+    endscript
+}
+
+# This one is not under supervisord (so manual log rotation)
+/sites/filer/logs/filer.log {
+    size 50M
+    missingok
+    rotate 10
+    copytruncate
+    compress
+    delaycompress
+    notifempty
+}

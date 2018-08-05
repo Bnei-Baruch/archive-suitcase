@@ -9,8 +9,8 @@ SCRIPT_BASE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 # RPM Fusion and EPEL Repositories
-yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install -y https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
 
 # Setup Access over ssh
 cat <<EOT > /etc/ssh/sshd_config
@@ -24,7 +24,6 @@ systemctl restart sshd
 # To allow access to this suitcase from your own workstation
 # Do this on your machine
 # ssh-copy-id root@<suitcase-ip>
-
 
 
 
@@ -44,9 +43,7 @@ yum install -y postgresql96 postgresql96-server
 systemctl enable postgresql-9.6
 sed -i 's/ident/trust/g' /var/lib/pgsql/9.6/data/pg_hba.conf
 systemctl start postgresql-9.6
-cat <<EOT > /root/.pgpass
-${MDB_PGPASS}
-EOT
+echo ${MDB_PGPASS} > /root/.pgpass
 chmod 0600 /root/.pgpass
 #cp /root/.pgpass /home/archive
 #chown archive:archive /home/archive/.pgpass
@@ -59,6 +56,8 @@ su postgres -c 'psql -c "CREATE USER root WITH SUPERUSER;"'
 # ElasticSearch
 # https://www.elastic.co/guide/en/elasticsearch/reference/5.6/rpm.html
 # https://www.elastic.co/guide/en/elasticsearch/reference/5.5/modules-snapshots.html
+
+yum install -y java-1.8.0-openjdk-devel
 
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 cat <<EOT > /etc/yum.repos.d/elasticsearch.repo
@@ -110,8 +109,8 @@ curl -XPUT 'http://localhost:9200/_snapshot/backup' -H 'Content-Type: applicatio
 
 yum install -y sshpass
 echo -e "\n\n\n" | ssh-keygen -t rsa -b 4096 -C "archive@suitcase.bbdomain.org"
-sshpass -p "$SUITCASE_REMOTE_PASS" ssh-copy-id suitcase@app.archive.bbdomain.org
-sshpass -p "$SUITCASE_REMOTE_PASS" ssh-copy-id suitcase@elastic.archive.bbdomain.org
+sshpass -p "${SUITCASE_REMOTE_PASS}" ssh-copy-id suitcase@app.archive.bbdomain.org
+sshpass -p "${SUITCASE_REMOTE_PASS}" ssh-copy-id suitcase@elastic.archive.bbdomain.org
 
 
 
@@ -151,8 +150,9 @@ rsync -avzhe ssh suitcase@app.archive.bbdomain.org:/sites/assets/ /sites/assets
 
 
 # kmedia-mdb (SSR)
-yum install -y git nodejs gcc-c++ make
+yum install -y git gcc-c++ make
 curl --silent --location https://rpm.nodesource.com/setup_9.x | sudo bash -
+yum install -y nodejs
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
 yum install -y yarn
 
@@ -169,6 +169,14 @@ cp ${SCRIPT_BASE}/config/archive-ssr.env /sites/kmedia-mdb/.env
 
 
 # archive-backend
+
+# LibreOffice (required by archive-backend)
+# https://www.libreoffice.org/download/download/
+wget https://ftp.gwdg.de/pub/tdf/libreoffice/stable/6.0.6/rpm/x86_64/LibreOffice_6.0.6_Linux_x86-64_rpm.tar.gz
+tar -xvf LibreOffice_6.0.6_Linux_x86-64_rpm.tar.gz
+cd LibreOffice_6.0.6.2_Linux_x86-64_rpm/RPMS/
+yum localinstall -y *.rpm
+
 rsync -avzhe ssh --exclude 'logs/*' --exclude 'mdb-docx' suitcase@app.archive.bbdomain.org:/sites/archive-backend/ /sites/archive-backend
 cp -f ${SCRIPT_BASE}/config/archive-backend.toml /sites/archive-backend/config.toml
 
@@ -269,16 +277,16 @@ cp ${SCRIPT_BASE}/config/mdb-links.toml /sites/mdb-links/config.toml
 
 
 # filer-backend
-mkdir -p /sites/filer
-mkdir -p /sites/.files/index
+mkdir -p /sites/filer/{logs,indexes}
+mkdir -p /root/.config
 cp ${SCRIPT_BASE}/config/filer_storage.conf /root/.config/filer_storage.conf
 echo "you need to get filer-backend executable into /sites/filer/filer-backend"
 
 
 
 # mdb-fs
-mkdir -p /sites/mdb-fs/{logs,root_storage}
-touch /sites/mdb-fs/root_storage/index
+mkdir -p /sites/mdb-fs/logs
+touch /mnt/storage/index
 cp ${SCRIPT_BASE}/config/mdb-fs.toml /sites/mdb-fs/config.toml
 cat <<EOT >> /sites/mdb-fs/config.toml
 suitcase-id="${SUITCASE_ID}"
@@ -299,7 +307,7 @@ EOT
 
 
 # bring all processes up
-cp supervisord/*.ini /etc/supervisord.d
+cp ${SCRIPT_BASE}/supervisord/*.ini /etc/supervisord.d
 supervisorctl reread
 supervisorctl update
 

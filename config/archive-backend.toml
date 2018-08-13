@@ -18,4 +18,4 @@ cdn-url="http://cdn.archive"
 url1="http://files.archive"
 
 [assets_service]
-url="http://localhost/assets/api/"
+url="http://archive/assets/api/"

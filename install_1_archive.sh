@@ -286,13 +286,22 @@ echo "you need to get filer-backend executable into /sites/filer/filer-backend"
 
 # mdb-fs
 mkdir -p /sites/mdb-fs/logs
-touch /mnt/storage/index
+touch /mnt/storage/mdb_files/index
 cp ${SCRIPT_BASE}/config/mdb-fs.toml /sites/mdb-fs/config.toml
 cat <<EOT >> /sites/mdb-fs/config.toml
 suitcase-id="${SUITCASE_ID}"
 EOT
 echo "you need to get mdb-fs executable into /sites/mdb-fs/mdb-fs"
 
+
+
+# mdb
+mkdir -p /sites/mdb/logs
+cp ${SCRIPT_BASE}/config/mdb.toml /sites/mdb/config.toml
+echo "you need to get mdb executable into /sites/mdb/mdb"
+
+# mdb admin ui
+rsync -avzhe ssh suitcase@app.archive.bbdomain.org:/sites/admin/ /sites/admin
 
 
 # Final steps

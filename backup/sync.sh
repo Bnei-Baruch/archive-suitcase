@@ -20,3 +20,10 @@ rsync -avzhe ssh --delete suitcase@elastic.archive.bbdomain.org:/backup/es/ /bac
 curl -XPOST localhost:9200/_all/_close
 sleep 5s
 curl -XPOST localhost:9200/_snapshot/backup/full/_restore
+
+# Static site assets
+rsync -avzhe ssh --delete --exclude='generated' --exclude='unzip' suitcase@app.archive.bbdomain.org:/sites/assets/ /sites/assets
+
+# Save to RAID
+rsync -ac /sites/assets/{sources,lessons,persons,logos,help} /mnt/storage/assets/
+rsync -ac /backup/mdb/ /mnt/storage/mdb/

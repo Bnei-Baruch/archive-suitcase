@@ -2,7 +2,8 @@
 /sites/archive-unzip/logs/nginx-*.log
 /sites/imaginary/logs/nginx-*.log
 /sites/archive-backend/logs/nginx-*.log
-/sites/filer/logs/nginx-*.log {
+/sites/filer/logs/nginx-*.log
+/sites/mdb/logs/nginx-*.log {
     size 10M
     missingok
     rotate 10

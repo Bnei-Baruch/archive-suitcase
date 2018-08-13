@@ -4,5 +4,5 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 30 0 * * * root /backup/sync.sh
 
 # make sure mdb-fs index is always fresh in filer
-*/5 * * * * root rsync -ac /mnt/storage/index /sites/filer/indexes
+*/5 * * * * root rsync -ac /mnt/storage/mdb_files/index /sites/filer/indexes
 

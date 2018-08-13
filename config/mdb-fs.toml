@@ -1,4 +1,4 @@
-root="/mnt/storage"
+root="/mnt/storage/mdb_files"
 mdb="postgres://localhost:5432/mdb?sslmode=disable"
 origins=["http://files.bbdomain.org","http://files.kabbalahmedia.info"]
 fetchers=2

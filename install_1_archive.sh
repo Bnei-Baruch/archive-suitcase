@@ -61,16 +61,16 @@ yum install -y java-1.8.0-openjdk-devel
 
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 cat <<EOT > /etc/yum.repos.d/elasticsearch.repo
-[elasticsearch-5.x]
-name=Elasticsearch repository for 5.x packages
-baseurl=https://artifacts.elastic.co/packages/5.x/yum
+[elasticsearch-6.x]
+name=Elasticsearch repository for 6.x packages
+baseurl=https://artifacts.elastic.co/packages/6.x/yum
 gpgcheck=1
 gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
 enabled=1
 autorefresh=1
 type=rpm-md
 EOT
-yum install -y elasticsearch-5.6.0-1
+yum install -y elasticsearch-6.3.2-1
 systemctl enable elasticsearch
 systemctl start elasticsearch
 cat <<EOT >> /etc/elasticsearch/elasticsearch.yml
@@ -85,9 +85,10 @@ EOT
 echo "exclude=elasticsearch*" >> /etc/yum.conf
 
 systemctl restart elasticsearch
-/usr/share/elasticsearch/bin/elasticsearch-plugin install analysis-icu
-/usr/share/elasticsearch/bin/elasticsearch-plugin install analysis-phonetic
-echo -e "y\n" | /usr/share/elasticsearch/bin/elasticsearch-plugin install https://bintray.com/synhershko/elasticsearch-analysis-hebrew/download_file?file_path=elasticsearch-analysis-hebrew-5.6.0.zip
+mkdir -p /etc/elasticsearch/hunspell/he_IL
+wget -O /etc/elasticsearch/hunspell/he_IL/he_IL.aff https://raw.githubusercontent.com/elastic/hunspell/master/dicts/he_IL/he_IL.aff
+wget -O /etc/elasticsearch/hunspell/he_IL/he_IL.dic https://raw.githubusercontent.com/elastic/hunspell/master/dicts/he_IL/he_IL.dic
+wget -O /etc/elasticsearch/hunspell/he_IL/settings.yml https://raw.githubusercontent.com/elastic/hunspell/master/dicts/he_IL/settings.yml
 
 systemctl restart elasticsearch
 sleep 10s
@@ -137,6 +138,7 @@ yum install -y supervisor
 systemctl enable supervisord
 systemctl start supervisord
 sed -i '4iWants=postgresql-9.6.service elasticsearch.service' /usr/lib/systemd/system/supervisord.service
+sed -i '5iAfter=postgresql-9.6.service elasticsearch.service' /usr/lib/systemd/system/supervisord.service
 
 
 # archive-frontend

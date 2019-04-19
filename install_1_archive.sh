@@ -153,7 +153,7 @@ rsync -avzhe ssh suitcase@app.archive.bbdomain.org:/sites/assets/ /sites/assets
 
 # kmedia-mdb (SSR)
 yum install -y git gcc-c++ make
-curl --silent --location https://rpm.nodesource.com/setup_9.x | sudo bash -
+curl --silent --location https://rpm.nodesource.com/setup_10.x | sudo bash -
 yum install -y nodejs
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
 yum install -y yarn

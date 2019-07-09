@@ -116,7 +116,7 @@ sshpass -p "${SUITCASE_REMOTE_PASS}" ssh-copy-id suitcase@elastic.archive.bbdoma
 
 
 # Setup and run first sync for MDB and ES
-cp ${SCRIPT_BASE}/backup/sync.sh /backup
+cp ${SCRIPT_BASE}/script/sync.sh /backup
 chmod +x /backup/sync.sh
 exec /backup/sync.sh
 
@@ -181,7 +181,8 @@ yum localinstall -y *.rpm
 
 rsync -avzhe ssh --exclude 'logs/*' --exclude 'mdb-docx' suitcase@app.archive.bbdomain.org:/sites/archive-backend/ /sites/archive-backend
 cp -f ${SCRIPT_BASE}/config/archive-backend.toml /sites/archive-backend/config.toml
-
+cp ${SCRIPT_BASE}/script/bump_archive_backend.sh /sites/archive-backend/bump.sh
+chmod +x /sites/archive-backend/bump.sh
 
 
 # Imaginary
@@ -284,7 +285,7 @@ cp ${SCRIPT_BASE}/config/mdb-links.toml /sites/mdb-links/config.toml
 mkdir -p /sites/filer/{logs,indexes}
 mkdir -p /root/.config
 cp ${SCRIPT_BASE}/config/filer_storage.conf /root/.config/filer_storage.conf
-echo "you need to get filer-backend executable into /sites/filer/filer-backend"
+echo "you need to get filer-backend executable into /sites/filer/filer-backend (probably from another suitcase)"
 
 
 
@@ -295,18 +296,24 @@ cp ${SCRIPT_BASE}/config/mdb-fs.toml /sites/mdb-fs/config.toml
 cat <<EOT >> /sites/mdb-fs/config.toml
 suitcase-id="${SUITCASE_ID}"
 EOT
-echo "you need to get mdb-fs executable into /sites/mdb-fs/mdb-fs"
+cp ${SCRIPT_BASE}/script/bump_mdb_fs.sh /sites/mdb-fs/bump.sh
+chmod +x /sites/mdb-fs/bump.sh
+echo "you need to get mdb-fs executable into /sites/mdb-fs/mdb-fs (manually or with bump.sh)"
 
 
 
 # mdb
 mkdir -p /sites/mdb/logs
 cp ${SCRIPT_BASE}/config/mdb.toml /sites/mdb/config.toml
-echo "you need to get mdb executable into /sites/mdb/mdb"
+cp ${SCRIPT_BASE}/script/bump_mdb.sh /sites/mdb/bump.sh
+chmod +x /sites/mdb/bump.sh
+echo "you need to get mdb executable into /sites/mdb/mdb (manually or with bump.sh)"
+
+
 
 # mdb admin ui
 rsync -avzhe ssh suitcase@app.archive.bbdomain.org:/sites/admin/ /sites/admin
-
+echo "this will get you nowhere. you need a suitcase version (teamcity build)"
 
 # Final steps
 

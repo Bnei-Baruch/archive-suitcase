@@ -13,9 +13,11 @@ docx-folder="/sites/archive-backend/es/mdb-docx/"
 soffice-bin="/usr/bin/libreoffice6.0"
 parse-docs-bin="/sites/archive-backend/es/parse_docs.py"
 cdn-url="http://cdn.archive"
+unzip-url="http://localhost/assets/api"
 
 [file_service]
 url1="http://files.archive"
 
 [assets_service]
-url="http://archive/assets/api/"
+url="http://localhost/assets/api/"
+

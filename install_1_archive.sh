@@ -266,6 +266,7 @@ git clone https://github.com/Bnei-Baruch/archive-unzip
 cd /sites/archive-unzip
 python3.6 -m venv .
 source bin/activate
+yum install -y postgresql-devel
 pip install -r requirements.txt
 pip install uWSGI==2.0.15
 mkdir logs

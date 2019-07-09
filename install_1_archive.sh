@@ -25,8 +25,6 @@ systemctl restart sshd
 # Do this on your machine
 # ssh-copy-id root@<suitcase-ip>
 
-
-
 # Archive Apps and Services
 
 mkdir /sites/
@@ -339,3 +337,6 @@ nginx -s reload
 # setup scheduled jobs
 cp ${SCRIPT_BASE}/cron/archive /etc/cron.d/
 cp ${SCRIPT_BASE}/logrotate/archive /etc/logrotate.d
+
+# bb-deployment ssh acceess - ci deploys (TeamCity)
+echo "add bb-deployment ssh key to root's authorized_keys"

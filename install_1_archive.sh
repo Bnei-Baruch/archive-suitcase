@@ -161,7 +161,7 @@ yum install -y yarn
 cd /sites/
 git clone https://github.com/Bnei-Baruch/kmedia-mdb
 cd /sites/kmedia-mdb/
-yarn --production
+yarn --frozen-lockfile
 yarn cache clean
 ln -s /sites/archive-frontend/ build
 mkdir /sites/kmedia-mdb/logs

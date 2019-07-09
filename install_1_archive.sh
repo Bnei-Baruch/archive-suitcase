@@ -12,7 +12,7 @@ SCRIPT_BASE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum install -y https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
 
-# Setup Access over ssh
+# Setup Access over ssh (skip if you already have access)
 cat <<EOT > /etc/ssh/sshd_config
 PermitRootLogin yes
 PermitEmptyPasswords no
@@ -70,7 +70,7 @@ enabled=1
 autorefresh=1
 type=rpm-md
 EOT
-yum install -y elasticsearch-6.3.2-1
+yum install -y elasticsearch
 systemctl enable elasticsearch
 systemctl start elasticsearch
 cat <<EOT >> /etc/elasticsearch/elasticsearch.yml
@@ -82,7 +82,7 @@ bootstrap.system_call_filter: false
 # snapshot repo
 path.repo: ["/backup/es"]
 EOT
-echo "exclude=elasticsearch*" >> /etc/yum.conf
+#echo "exclude=elasticsearch*" >> /etc/yum.conf
 
 systemctl restart elasticsearch
 mkdir -p /etc/elasticsearch/hunspell/he_IL

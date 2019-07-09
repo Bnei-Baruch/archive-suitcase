@@ -2,5 +2,6 @@ root="/mnt/storage/mdb_files"
 mdb="postgres://localhost:5432/mdb?sslmode=disable"
 origins=["http://files.bbdomain.org","http://files.kabbalahmedia.info"]
 fetchers=2
+index-workers=3
 sync-update-interval="60s"
 suitcase-id=""

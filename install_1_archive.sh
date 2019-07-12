@@ -35,7 +35,7 @@ chmod a+w /backup/{mdb,es,github}
 # Postgresql (9.6)
 # https://www.postgresql.org/download/linux/redhat/
 
-yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 yum install -y postgresql96 postgresql96-server
 /usr/pgsql-9.6/bin/postgresql96-setup initdb
 systemctl enable postgresql-9.6

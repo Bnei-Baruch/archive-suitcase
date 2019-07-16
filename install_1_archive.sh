@@ -121,7 +121,7 @@ exec /backup/sync.sh
 
 
 # Nginx
-yum install -y nginx
+yum install -y nginx policycoreutils-python
 systemctl enable nginx
 systemctl start nginx
 firewall-cmd --zone=public --permanent --add-service=http
@@ -323,6 +323,8 @@ cat <<-EOT >> /etc/hosts
 127.0.0.1   files.archive
 EOT
 
+chown -R root:root /sites/
+find /sites/assets/ -type d -exec chmod +755 {} \;
 
 # bring all processes up
 cp ${SCRIPT_BASE}/supervisord/*.ini /etc/supervisord.d

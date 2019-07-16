@@ -316,11 +316,11 @@ echo "this will get you nowhere. you need a suitcase version (teamcity build)"
 # Final steps
 
 # setup DNS
-cat <<EOT >> /etc/hosts
+cat <<-EOT >> /etc/hosts
 # Archive domain
-127.0.0.1	archive
-127.0.0.1	cdn.archive
-127.0.0.1	files.archive
+127.0.0.1   archive
+127.0.0.1   cdn.archive
+127.0.0.1   files.archive
 EOT
 
 

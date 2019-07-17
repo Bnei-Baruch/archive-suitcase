@@ -342,3 +342,4 @@ cp ${SCRIPT_BASE}/logrotate/archive /etc/logrotate.d
 
 # bb-deployment ssh acceess - ci deploys (TeamCity)
 echo "add bb-deployment ssh key to root's authorized_keys"
+echo "deploy suitcase jobs of kmedia-mdb and mdb-admin to new suitcase"
